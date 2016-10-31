@@ -1,0 +1,41 @@
+<div class="container">
+	<div class="jumbotron">
+		<h1>To-Do List</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+		
+			<table>
+				<thead>
+					<tr>
+						<th>id</th>
+						<th>Task</th>
+						<th>Complete?</th>
+						<th>Timestamp</th>
+					</tr>
+				<tbody>
+				{{#each tasks}}
+					<tr>
+						<td>{{id}}</td>
+						<td>{{task}}</td>
+						<td>{{isComplete}}</td>
+						<td>{{timeCreated}}</td>
+					</tr>
+				{{/each}}
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+
+	<br/>
+
+	<div class="row">
+		<div class="col-md-12">
+			<p>
+				<a href="/api/friends">API To-Do List</a> | <a href="https://github.com/mattsplats/to-do">GitHub Repo</a>
+			</p>
+		</div>
+	</div>
+</div>

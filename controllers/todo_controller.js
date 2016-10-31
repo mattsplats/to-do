@@ -3,7 +3,10 @@ const express = require('express'),
       todo    = require('../models/todo.js');
 
 router.get('/', function (req, res) {
-	res.render('index');
+	todo.all(data => {
+		data.map(item => item.isComplete = !!item.isComplete);
+		res.render('index', { tasks: data });
+	});
 });
 
 module.exports = router;

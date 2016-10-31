@@ -1,5 +1,9 @@
-const orm = require('../config/orm.js').orm;
+const orm = require('../config/orm.js');
 
-const todo = {};
+const todo = {
+	all: function (callback) {
+		orm.select('tasks', res => callback(res));
+	}
+};
 
 module.exports = todo;
