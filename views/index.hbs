@@ -4,30 +4,68 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-12">
-		
-			<table>
-				<thead>
-					<tr>
-						<th>id</th>
-						<th>Task</th>
-						<th>Complete?</th>
-						<th>Timestamp</th>
-					</tr>
-				<tbody>
-				{{#each tasks}}
-					<tr>
-						<td>{{id}}</td>
-						<td>{{task}}</td>
-						<td>{{isComplete}}</td>
-						<td>{{timeCreated}}</td>
-					</tr>
-				{{/each}}
-				</tbody>
-			</table>
 
+		<!-- Incomplete tasks -->
+		<div class="col-xs-5">
+			<ul id="list">
+
+			{{#each tasks}}
+				{{#unless isComplete}}
+				<li id="item_{{id}}">
+					<div id="text_{{id}}">
+						<div id="task_{{id}}">{{task}}</div>
+						
+						<div>
+							<button type="button" data-id="{{id}}" class="complete">Complete</button>&nbsp;
+							<button type="button" data-id="{{id}}" class="update">Modify</button>&nbsp;
+							<button type="button" data-id="{{id}}" class="delete">Delete</button>
+						</div>
+						<br/>
+					</div>
+
+					<div id="update_{{id}}" class="form-group" style="display: none;">
+						<label for="task">Task:</label>
+						<input type="text" id="task_update_{{id}}" name="task" value="{{task}}">
+						<button type="button" data-id="{{id}}" class="submitUpdate">Update Task</button>
+					</div>
+				</li>
+				{{/unless}}
+			{{/each}}
+
+			</ul>
 		</div>
-	</div>
+
+		<!-- Completed tasks -->
+		<div class="col-xs-offset-2 col-xs-5">
+			<button type="button" id="clear_completed">Clear Completed Tasks</button>
+			<br/>
+			<br/>
+
+			<ul id="done">
+
+			{{#each tasks}}
+				{{#if isComplete}}
+				<li>{{task}}</li>
+				{{/if}}
+			{{/each}}
+
+			</ul>
+		</div>
+	</div>  <!-- End row -->
+
+	<br/>
+
+	<!-- Create task -->
+	<div class="row">
+		<div class="col-xs-12">
+		  <div class="form-group">
+		    <label for="new_task">New task: </label>
+		    <input type="text" id="new_task" name="new_task">
+		  </div>
+
+		  <button type="button" id="create">Add task</button>
+		</div>
+	</div>  <!-- End row -->
 
 	<br/>
 

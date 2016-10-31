@@ -3,6 +3,7 @@
 // Express vars
 const express    = require('express'),
       exphbs     = require('express-handlebars'),
+      bodyParser = require('body-parser'),
 
       routes     = require('./controllers/todo_controller.js'),
 
@@ -14,6 +15,12 @@ const express    = require('express'),
 app.engine('.hbs', hbs.engine);
 app.set('view engine', '.hbs');
 // app.enable('view cache');
+
+// Express init
+app.use(bodyParser.json());
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.text());
 
 // Static route
 app.use(express.static(process.cwd() + '/public'));

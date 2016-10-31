@@ -1,15 +1,29 @@
 const conn = require('./connection.js');
 
 const orm = {
-	select: function (table, callback) {
-		conn.query(`SELECT * FROM ??`, table, function (err, res) {
+	select: function (values, table, callback) {
+		conn.query(`SELECT ?? FROM ??`, [values, table], function (err, res) {
 			if (err) throw err;
 			callback(res);
 		});
 	},
 
-	selectWhere: function (table, col, query, callback) {
-		conn.query(`SELECT * FROM ?? WHERE ?? LIKE ?`, [table, col, query], function (err, res) {
+	insert: function (table, columns, values, callback) {
+		conn.query(`INSERT INTO ?? (??) VALUE (?)`, [table, columns, values], function (err, res) {
+			if (err) throw err;
+			callback(res);
+		});
+	},
+
+	update: function (table, setCol, setVal, whereCol, whereVal, callback) {
+		conn.query(`UPDATE ?? SET ?? = ? WHERE ?? = ?`, [table, setCol, setVal, whereCol, whereVal], function (err, res) {
+			if (err) throw err;
+			callback(res);
+		});
+	},
+
+	delete: function (table, whereCol, whereVal, callback) {
+		conn.query(`DELETE FROM ?? WHERE ?? = ?`, [table, whereCol, whereVal], function (err, res) {
 			if (err) throw err;
 			callback(res);
 		});
