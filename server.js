@@ -9,14 +9,14 @@ const express    = require('express'),
 
       app        = express(),
       hbs        = exphbs.create({ defaultLayout: 'main', extname: '.hbs' }),
-      PORT       = 3000;
+      PORT       = process.env.PORT || 3000;
 
 // Handlebars init
 app.engine('.hbs', hbs.engine);
 app.set('view engine', '.hbs');
 // app.enable('view cache');
 
-// Express init
+// Body parser init
 app.use(bodyParser.json());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -29,6 +29,6 @@ app.use(express.static(process.cwd() + '/public'));
 app.use('/', routes);
 
 // Init server
-app.listen(process.env.PORT || PORT, function () {
+app.listen(PORT, function () {
 	console.log(`App listening on port ${PORT}`);
 });

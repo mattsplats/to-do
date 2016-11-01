@@ -24,14 +24,14 @@ router.put('/', function (req, res) {
 	}
 });
 
-// Delete pending task
+// Delete pending task, or all completed tasks
 router.delete('/', function (req, res) {
-	todo.deleteTask(req.body.id, data => res.json(data));
-});
+	if (req.body.id === 'completed') {
+		todo.clearCompleted(data => res.json(data));
 
-// Delete completed tasks
-router.delete('/completed', function (req, res) {
-	todo.clearCompleted(data => res.json(data));
+	} else {
+		todo.deleteTask(req.body.id, data => res.json(data));
+	}
 });
 
 module.exports = router;
