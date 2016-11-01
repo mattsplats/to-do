@@ -20,10 +20,14 @@ body, h1, h2 {
 	background-color: white;
 }
 
+.list-group-item {
+	padding: 5px;
+}
+
 .form-control {
 	font-size: 100%;
 }
 
 #done {
-	color: grey;
+	color: lightgrey;
 }

@@ -51,11 +51,13 @@ $(function () {
 
   // Show update input
   $('#list').on('click', '.update', function (e) {
-    const id = $(this).data('id');
+    const id    = $(this).data('id'),
+          input = $(`#update_input_${id}`);  // Store the element reference so we can use a native JS method later
 
     $(`#update_${id}`).show({duration: 125});
     $(`#text_${id}`).hide();
-    $(`#update_input_${id}`).focus();
+    input.focus();
+    input[0].setSelectionRange(30,30);  // Sets the cursor location at the end of the input (max chars == 30)
   });
 
   // Make put request with updated task (on click)
