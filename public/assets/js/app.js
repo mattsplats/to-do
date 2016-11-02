@@ -1,37 +1,50 @@
+// On load
 $(function () {
+  const SLIDE_TIME = 175;
+
+  // If completed tasks is not empty, show clear button
+  if ($('#done').children().length > 0) $('#clear_completed').show();
+
+
 
   // Create new task (on click)
   $('#create').on('click', function (e) {
-    $.post('/', {task: $('#new_task').val().trim()}, function (data) {
-      const template = `
+    const task = $('#new_task').val().trim();
+
+    if (task) {
+      $.post('/', {task: task}, function (data) {
+        const template = `
 <li id="item_${data.insertId}" class="list-group-item">
   <div id="text_${data.insertId}">
     <button type="button" data-id="${data.insertId}" class="btn btn-danger delete"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-    <button type="button" data-id="${data.insertId}" class="btn btn-warning update"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+    <button type="button" data-id="${data.insertId}" class="btn btn-default update"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
     <span>&nbsp;</span>
-    <span id="task_${data.insertId}">${$('#new_task').val().trim()}</span>
+    <span id="task_${data.insertId}">${task}</span>
     <div class="pull-right">
       <button type="button" data-id="${data.insertId}" class="btn btn-success complete"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
     </div>
   </div>
 
-  <div id="update_${data.insertId}" class="input-group" style="display: none;">
+  <div id="update_${data.insertId}" class="input-group no-display">
     <span class="input-group-btn">
       <button type="button" class="btn btn-success submitUpdate" data-id="${data.insertId}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></button>
     </span>
-    <input type="text" class="form-control updateInput" id="update_input_${data.insertId}" value="${$('#new_task').val().trim()}" maxlength="30">
+    <input type="text" class="form-control updateInput" id="update_input_${data.insertId}" value="${task}" maxlength="30">
   </div>
 </li>`
-      
-      $('#list').append(template);
-      $('#new_task').val('');
-    });
+        
+        $('#list').append(template);
+        $(`#item_${data.insertId}`).hide().slideDown({duration: SLIDE_TIME});
+        $('#new_task').val('');
+      });
+    }
   });
 
   // Create new task (on enter)
   $('#new_task').keypress(function (e) {
     if (e.which == 13) $('#create').click();
   });
+
 
 
   // Mark task completed
@@ -43,10 +56,14 @@ $(function () {
         method: 'PUT',
         data: {id: id}
     }).then(function (data) {
-      $('#done').append($('<li>').text(task).addClass('list-group-item'));
-      $(`#item_${id}`).hide({duration: 250, complete: $(this).remove()});
+      const newDone = $('<li>').text(task).addClass('list-group-item');
+      $('#done').append(newDone);
+      newDone.hide().slideDown({duration: SLIDE_TIME});
+      $(`#item_${id}`).slideUp({duration: SLIDE_TIME, complete: $(this).remove()});
+      $('#clear_completed').show({delay: 50, duration: 50});
     });
   });
+
 
 
   // Show update input
@@ -65,20 +82,23 @@ $(function () {
     const id   = $(this).data('id'),
           task = $(`#update_input_${id}`).val().trim();
 
-    $.ajax({
-        method: 'PUT',
-        data: {id: id, task: task}
-    }).then(function (data) {
-      $(`#task_${id}`).text(task);
-      $(`#update_${id}`).hide();
-      $(`#text_${id}`).show();
-    });
+    if (task) {
+      $.ajax({
+          method: 'PUT',
+          data: {id: id, task: task}
+      }).then(function (data) {
+        $(`#task_${id}`).text(task);
+        $(`#update_${id}`).hide();
+        $(`#text_${id}`).show();
+      });
+    }
   });
 
   // Make put request with updated task (on enter)
   $('#list').on('keypress', '.updateInput', function (e) {
     if (e.which == 13) $(this).prev().children().click();  // Previous div, child button
   });
+
 
 
   // Delete task
@@ -89,7 +109,7 @@ $(function () {
         method: 'DELETE',
         data: {id: id}
     }).then(function (data) {
-      $(`#item_${id}`).hide({duration: 250, complete: $(this).remove()});
+      $(`#item_${id}`).slideUp({duration: SLIDE_TIME, complete: $(this).remove()});
     });
   });
 
@@ -99,8 +119,9 @@ $(function () {
         method: 'DELETE',
         data: {id: 'completed'}
     }).then(function (data) {
-      $(`#done`).children().hide({duration: 250});
-      setTimeout(() => $('#done').empty(), 300);  // Remove elements from page after timeout (otherwise animation fails)
+      $('#clear_completed').hide({duration: 100});
+      $('#done').children().slideUp({duration: SLIDE_TIME});
+      setTimeout(() => $('#done').empty(), SLIDE_TIME + 100);  // Remove elements from page after timeout (otherwise animation fails)
     });
   });
 });

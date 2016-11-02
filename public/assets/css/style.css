@@ -31,3 +31,12 @@ body, h1, h2 {
 #done {
 	color: lightgrey;
 }
+
+/* Custom classes */
+.no-display {
+	display: none;
+}
+
+.min-height {
+	min-height: 313px;  /* Permits 5 tasks or 4 completed without movement */
+}
