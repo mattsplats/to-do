@@ -1,7 +1,6 @@
 'use strict';
 
-const mysql    = require('mysql'),
-			password = require('./secret_keys.js');
+const mysql    = require('mysql');
 
 let connection;
 
@@ -12,7 +11,7 @@ if (process.env.JAWSDB_URL) {
 	connection = mysql.createConnection({
 		host: 'localhost',
 		user: 'root',
-		password: password,
+		password: require('./secret_keys.js'),
 		database: 'todo_db'
 	});
 }
@@ -22,7 +21,7 @@ connection.connect(function (err) {
 		console.error('error connecting: ' + err.stack);
 		return;
 	}
-	// console.log('connected as id ' + connection.threadId);
+	console.log('connected as id ' + connection.threadId);
 });
 
 module.exports = connection;
