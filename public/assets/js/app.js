@@ -27,7 +27,7 @@ $(function () {
     </div>
   </div>
 
-  <div id="update_${data.insertId}" class="input-group no-display">
+  <div id="update_${data.insertId}" class="input-group" style="display: none;">
     <span class="input-group-btn">
       <button type="button" class="btn btn-success submitUpdate" data-id="${data.insertId}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></button>
     </span>
