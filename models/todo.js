@@ -1,3 +1,5 @@
+'use strict';
+
 const orm = require('../config/orm.js');
 
 const todo = {

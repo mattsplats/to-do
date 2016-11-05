@@ -1,3 +1,5 @@
+'use strict';
+
 // On load
 $(function () {
   const SLIDE_TIME = 175;

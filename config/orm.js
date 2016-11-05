@@ -1,3 +1,5 @@
+'use strict';
+
 const conn = require('./connection.js');
 
 const orm = {
